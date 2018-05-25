@@ -1,0 +1,63 @@
+<{extends file="User-model.html"}>
+<{block name="Userdata"}>
+	<div class="content left">管理收货地址
+		<form method="post">
+		<input id="address" type="hidden" value="" name="address" />
+		<table border="1">
+			<tr><th>收件人：</th><td><input type="text" value="测试" name="consignee" /></td></tr>
+			<tr><th>收件地区：</th><td>
+				<select id="province" onchange="toCity()"><option>北京市</option></select>
+				<select id="city" onchange="toArea()"><option>市辖区</option></select>
+				<select id="area"><option>东城区</option></select>
+				</td></tr>
+			<tr><th>详细地址：</th><td><input id="addr" type="text" value="测试地址" /></td></tr>
+			<tr><th>手机：</th><td><input type="text" value="11111111111" name="phone" /></td></tr>
+			<tr><th>邮箱：</th><td><input type="text" value="1@11.com" name="email" /></td></tr>
+			<tr><td colspan="2" class="button center"><input type="submit" value="保存" /> <input type="reset" value="重置" /></td></tr>
+		</table>
+		</form>
+	</div>
+	<div class="clear"></div>
+</div>
+	
+	<script type="text/javascript">
+		$("#province").change(function(){
+			toCity();
+		});
+		$("#city").change(function(){
+			toArea();
+		});
+		var xml;
+		$(function(){
+			$.ajax({
+				url:"__STATIC__/ChinaArea.xml",
+				dataType:"xml",
+				success:function(xmldoc){
+					xml=xmldoc;
+					var provinces=$(xmldoc).find("province");
+					//console.log(provinces.text())
+					provinces.each(function() {
+						$("#province").append('<option value='+$(this).attr("provinceID")+'>'+$(this).attr("province")+'</option>');
+					})
+				}
+			})
+		});
+		function toCity(){
+			$("#city").empty();
+			var pr=$('#province').val();
+			var aa=$(xml).find("province[provinceID="+pr+"]");
+			var cities=aa.find("City");
+			cities.each(function() {
+						$("#city").append('<option value='+$(this).attr("CityID")+'>'+$(this).attr("City")+'</option>');
+					});
+		}
+		function toArea(){
+			$("#area").empty();
+			var ci=$("#city").val();
+			var areas=$(xml).find("City[CityID="+ci+"]").find("Piecearea");
+			areas.each(function() {
+						$("#area").append('<option>'+$(this).attr("Piecearea")+'</option>');
+					});
+		}
+	</script>
+<{/block}>

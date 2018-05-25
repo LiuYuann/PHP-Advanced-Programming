@@ -1,0 +1,52 @@
+<{extends file="model.html"}>
+<{block name="style"}>
+  <link href="__STATIC__/css/home.css" rel="stylesheet" />
+<{/block}>
+<{block name="Data"}>
+<div id="slide">
+	<{foreach $category as $row}>
+            <div class="cate"><div class="cate1 left"><a href="#" ><{$row}></a></div></div>
+        <{/foreach}>
+        <div class="clear"></div>
+</div>
+<div id="hot" class="left">
+	<img src="__STATIC__/image/1.jpg">
+	<img id="show" src="__STATIC__/image/1.jpg">
+	<ul>
+    	<li ></li>
+    	<li ></li>
+    	<li ></li>
+    	<li ></li>
+	</ul>
+</div>
+<div id="news" class="right">新闻列表</div>
+<div class="clear"></div>
+<div id="best">
+	<div class="best-img left"></div>
+	<{foreach $goods as $row}>
+	<ul class="item left">
+	    <li style="width:240px;heigh:340px;"><a href="#"  target="_blank"><img width="100%" height="100%" src="__STATIC__/image/<{$row['thumb']}>"></a></li>
+	    <li class="goods"><a href="#" target="_blank"><{$row['gname']}></a></li>
+	    <li class="price">￥<{$row['price']}></li>
+	    </ul>
+	<{/foreach}>
+	<div class="clear"></div>
+</div>
+
+<script type="text/javascript">
+console.log();
+		$("#hot li").each(function(i){
+			$(this).click(function(){
+			$("#hot img:first-child").css("display","none"); 
+			$("#hot #show").stop(true,true); 
+			//停止当前动画，避免出现排队
+          	$("#hot #show").fadeOut(700,"swing",function(){
+            $("#hot #show").attr("src","__STATIC__/image/"+(i+1)+".jpg");
+        	});
+        	$("#hot #show").fadeIn(700,"swing");
+            $("#hot li").css("background","gray");
+            $(this).css("background","yellow");
+			}); 
+		});  
+</script>
+<{/block}>

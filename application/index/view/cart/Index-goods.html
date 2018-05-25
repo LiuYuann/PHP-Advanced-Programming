@@ -1,0 +1,56 @@
+<{extends file="model.html"}>
+<{block name="style"}>
+  <link href="__STATIC__/css/home.css" rel="stylesheet" />
+  <style type="text/css">
+	img.zoom_image{ border:1px solid #cccccc;}
+	.zxx_image_zoom_div{ background:white; text-align:center; position:absolute;overflow:hidden;}
+</style>
+<script type="text/javascript" src="__STATIC__/js/jqzoom.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("img.zoom_image").jqueryzoom({
+		});
+	});
+</script>
+<{/block}>
+<{block name="Data"}>
+<div class="goodsinfo">
+	<div class="now_cat">当前位置：&nbsp;
+	<a href="#" >图书</a>&nbsp;&gt;&nbsp;
+	<a href="#" >教育</a>&nbsp;&gt;&nbsp;
+	<a href="#" >教材</a>&nbsp;&gt;&nbsp;
+	<{$goods['gname']}></div>
+	<div class=" pic left divtest">
+		<a href="__STATIC__/image/pythonl.jpg"  class="image_zoom_list">
+        <img class="zoom_image" src="__STATIC__/image/<{nocache}><{$goods['thumb']}><{/nocache}>"  width="100%" height="100%" alt=""/>
+        </a>
+	</div>
+	<div class="info left"><h1><{nocache}><{$goods['gname']}><{/nocache}></h1><table>
+		<tr><th>售 价：</th><td><span>￥<{nocache}><{$goods['price']}><{/nocache}></span></td></tr>
+		<tr><th>商品编号：</th><td><{nocache}><{$goods['identifier']}><{/nocache}></td></tr>
+		<tr><th>累计销量：</th><td>1000</td></tr>
+		<tr><th>评 价：</th><td>1000</td></tr>
+		<tr><th>配送至：</th><td><{nocache}><{$goods['address']}><{/nocache}>（免运费）</td></tr>
+		<tr><th>购买数量：</th><td>
+			<input type="button" value="-" class="cnt-btn" />
+			<input type="text" value="1" id="num" class="num-btn" />
+			<input type="button" value="+" class="cnt-btn" />（库存：100）</td></tr>
+		<tr><td colspan="2" class="button"><a href="#">立即购买</a><a href="#" onclick="addCart()">加入购物车</a></td></tr>
+		</table></div><div class="clear"></div>
+	<div class="slide left">相关商品</div>
+	<div class="desc left">
+		<div class="attr"><p>商品属性</p><ul>
+			<li>科目：计算机</li><li>出版社：铁道出版社</li><li>作者：</li>		<div class="clear"></div></ul></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<<script type="text/javascript">
+$(":button[value='+']").click(function(){
+			$("#num").attr("value",Number($("#num").attr("value"))+1);
+			});
+$(":button[value='-']").click(function(){
+	if(Number($("#num").attr("value"))>0)
+			$("#num").attr("value",Number($("#num").attr("value"))-1);
+			});
+</script>
+<{/block}>	

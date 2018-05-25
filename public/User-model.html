@@ -1,0 +1,19 @@
+<{extends file="model.html"}>
+<{block name="style"}>
+  <link href="__STATIC__/css/home.css" rel="stylesheet" />
+<{/block}>
+<{block name="Data"}>
+<div class="usercenter">
+<ul class="menu left">
+	<li><a href="#" id="User_index">个人信息</a></li>
+	<li>我的订单</li>
+	<li>我的关注</li>
+	<li><a href="__ROOT__/index.php/index/cart/addredit" id="User_addr">收货地址</a></li>
+	<li>消费记录</li>
+	<li><a href="__ROOT__/index.php/index/cart/index" id="Cart_index">购物车</a></li>
+</ul>
+</div>
+	<{block name="Userdata"}>
+		<{$smarty.block.child}>
+	<{/block}>
+<{/block}>

@@ -1,0 +1,86 @@
+<{extends file="User-model.html"}> 
+<{block name="Userdata"}>
+	<div class="content left">我的购物车
+		<form method="post">
+		<table border="1" id="shopcart" cellpadding="0" cellspacing="0">
+			<tr class="tr-tit"><th class="w50"><a href="#" >全选</a></th><th>商品</th><th class="w50">单价</th><th class="w92">数量</th><th class="w50">操作</th></tr>
+			<{if ! $cart|key}>
+						<{foreach $cart[0] as $row}>
+						    <tr class="item" id="<{$row['gid']}>">
+						    <td class="center"><input type="checkbox" class="check" name="checking" /></td>
+						    <td><a href="__ROOT__/index.php/index/cart/goodsdetail?gid=<{$row['gid']}>" target="_blank"><{$row['gname']}></a></td>
+						    <td class="center">￥<span class="item-price" name="price" ><{$row['price']}></span></td>
+						    <td><input class="item-num" onkeyup="checkNum(this)" type="number" min="0" value="<{$row['num']}>" name="num[]" /></td>
+						    <td class="center"><a href="#" class="del"  id="<{$smarty.session.mid}>">删除</a></td>
+						    </tr>
+						<{/foreach}>
+			<{/if}>
+				<tr><th><a href="#" >取消</a></th><td colspan="4">删除选中的商品&nbsp;&nbsp;继续购物&nbsp;&nbsp;
+				共<span id="num">0</span>件商品 总计：￥<span class="price" name="cost"><span id="monery">0</span></span>
+				<input type="submit" value="提交订单" class="order-btn" />
+			</td></tr>
+		</table>
+		</form>
+	</div>
+	<div class="clear"></div>
+</div>
+<script type="text/javascript">
+	$("#shopcart a:contains('全选')").click(function(){
+			checkedAll();
+			});
+	$("#shopcart a:contains('取消')").click(function(){
+			checkedNo();
+			});
+	$("#shopcart :checkbox[name=checking]").click(function(){
+			calCost();
+			});
+	$("#shopcart .item-num").click(function(){
+			calCost();
+			});
+	$(".del").each(function(){
+			$(this).click(function(i){
+				if(confirm("你确定要删除吗？")){
+					$gid=$(this).closest(".item").attr("id");
+					$mid=$(this).attr("id");
+					$this=$(this).closest(".item")
+					$.ajax({
+	                        url: "__ROOT__/index.php/index/cart/delcart",
+	                        data: { "gid":$gid,"mid":$mid,},
+	                        dataType:"json",
+	                        success: function (msg) {
+	                        	for(var key in msg){
+	                        		if(key==0){
+	                        			$this.remove();
+	                        		}
+	                        		else{
+	                        			alert("删除出错");
+	                        		}
+	                        	}
+	                        },
+	                    });
+					}
+				}); 
+		});  
+    function checkedAll(){
+		$("#shopcart :checkbox").prop("checked",true);
+     	calCost();
+    }
+	function checkedNo(){
+		$("#shopcart :checkbox").prop("checked",false);
+		calCost();
+	}
+	function calCost(){
+		var totalNum=0;
+		var totalPrice = 0;
+		$("#shopcart :checkbox").each(function(n){
+			if($(this).prop("checked")==true){
+				totalNum += Number($("#shopcart .item-num")[n].value);
+                totalPrice += Number($("#shopcart .item-price")[n].innerText) * Number($("#shopcart .item-num")[n].value);
+			}
+		});
+		$("#num").text(totalNum);
+        $("#monery").text(totalPrice);
+	}
+</script>
+<{/block}>	
+	
